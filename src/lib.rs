@@ -38,6 +38,10 @@ pub mod logic;
 pub mod models;
 pub mod tauri_api;
 
+// CLI module (optional, enabled with "cli" feature)
+#[cfg(feature = "cli")]
+pub mod cli;
+
 // Re-export error types for convenient usage
 pub use error::{NexusError, Result};
 
@@ -79,6 +83,7 @@ pub use db::operations::{
     create_user,
     delete_favorite_sound,
     get_active_blocked_items_by_user_id,
+    get_all_peers,
     get_all_sounds,
     get_block,
     get_device,
@@ -87,6 +92,7 @@ pub use db::operations::{
     get_habit,
     get_habit_entries_sorted_by_date,
     get_oplog_entries_since,
+    get_peer,
     get_peers_by_user_id,
     get_pomodoros_by_user_id,
     get_sound,

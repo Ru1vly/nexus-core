@@ -780,6 +780,26 @@ pub fn get_peers_by_user_id(conn: &Connection, user_id: Uuid) -> Result<Vec<Peer
     Ok(peers)
 }
 
+// Peer READ (by peer_id)
+pub fn get_peer(conn: &Connection, peer_id: Uuid) -> Result<Peer> {
+    let mut stmt = conn.prepare("SELECT peer_id, user_id, device_id, last_known_ip, last_sync_time FROM peers WHERE peer_id = ?1")?;
+    let peer = stmt.query_row(params![peer_id.to_string()], row_to_peer)?;
+    Ok(peer)
+}
+
+// Peer READ (all)
+pub fn get_all_peers(conn: &Connection) -> Result<Vec<Peer>> {
+    let mut stmt = conn.prepare("SELECT peer_id, user_id, device_id, last_known_ip, last_sync_time FROM peers")?;
+    let rows = stmt.query_map(params![], row_to_peer)?;
+
+    let mut peers = Vec::new();
+    for row in rows {
+        peers.push(row?);
+    }
+
+    Ok(peers)
+}
+
 // TaskList READ (by user)
 pub fn get_task_lists_by_user_id(conn: &Connection, user_id: Uuid) -> Result<Vec<TaskList>> {
     let mut stmt =

@@ -1,4 +1,4 @@
-fuse rusqlite::Connection;
+use rusqlite::Connection;
 use std::sync::{Arc, Mutex};
 use std::collections::VecDeque;
 use uuid::Uuid;

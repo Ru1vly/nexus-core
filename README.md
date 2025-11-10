@@ -5,11 +5,11 @@
 [![License](https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-blue)](#license)
 [![Crates.io](https://img.shields.io/crates/v/nexus-core)](https://crates.io/crates/nexus-core)
 
-> Core Rust library for the FocusSuite ecosystem - providing database operations, business logic, and peer-to-peer synchronization capabilities.
+> Core Rust library for the FocusSuite ecosystem - providing database operations, business logic, and peer-to-peer synchronization capabilities. Now available as a CLI tool for developers!
 
 ## Overview
 
-`nexus-core` is a cross-platform Rust library that powers FocusSuite's productivity applications. It provides:
+`nexus-core` is a cross-platform Rust library and CLI tool that powers FocusSuite's productivity applications. It provides:
 
 - **SQLite database** with automatic schema migrations
 - **User authentication** with Argon2 password hashing
@@ -35,6 +35,8 @@ rustup default nightly
 
 ### Installation
 
+#### As a Library
+
 Add to your `Cargo.toml`:
 
 ```toml
@@ -42,7 +44,22 @@ Add to your `Cargo.toml`:
 nexus-core = { path = "../nexus-core" }
 ```
 
+#### As a CLI Tool
+
+```bash
+# Build and install
+cargo install --path . --features cli
+
+# Or build from source
+cargo build --release --features cli
+
+# Verify installation
+nexus-cli --version
+```
+
 ### Basic Usage
+
+#### Library Usage
 
 ```rust
 use nexus_core::{initialize_database, register_user, login_user};
@@ -62,6 +79,25 @@ let user = register_user(
 let authenticated_user = login_user(&conn, "alice", "secure_password")?;
 
 println!("Welcome, {}!", authenticated_user.user_name);
+```
+
+#### CLI Usage
+
+```bash
+# Initialize with user
+nexus-cli init --user alice --email alice@example.com
+
+# Start sync daemon
+nexus-cli start --daemon
+
+# Check status
+nexus-cli status
+
+# View logs
+nexus-cli logs --follow
+
+# For complete CLI documentation:
+# See docs/CLI_USAGE.md
 ```
 
 ## Features
@@ -201,6 +237,7 @@ cargo test -- --nocapture
 
 | Document | Description |
 |----------|-------------|
+| [CLI_USAGE.md](docs/CLI_USAGE.md) | **Complete CLI tool guide** |
 | [DATABASE_MIGRATIONS.md](docs/DATABASE_MIGRATIONS.md) | Complete migration system guide |
 | [MIGRATION_QUICK_START.md](docs/MIGRATION_QUICK_START.md) | Quick reference for migrations |
 | [MIGRATION_SYSTEM_SUMMARY.md](MIGRATION_SYSTEM_SUMMARY.md) | Implementation summary |
