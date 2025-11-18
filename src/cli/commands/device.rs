@@ -101,21 +101,20 @@ pub async fn pair(device_type: &str, name: Option<&str>, config: &Config) -> Cli
 
     // Get or generate device ID from config
     let device_id = config
-        .device_id
+        .device
         .as_ref()
-        .and_then(|id| uuid::Uuid::parse_str(id).ok())
+        .and_then(|d| uuid::Uuid::parse_str(&d.id).ok())
         .ok_or_else(|| CliError::ConfigError("Device ID not configured".to_string()))?;
 
     // Generate keypair for this device (in production, this should be stored)
     let keypair = Keypair::generate_ed25519();
 
     // Get network listen address from config
-    let listen_addr = config
-        .network
-        .as_ref()
-        .and_then(|n| n.listen_addresses.first())
-        .map(|s| s.clone())
-        .unwrap_or_else(|| "/ip4/0.0.0.0/tcp/0".to_string());
+    let listen_addr = format!(
+        "/ip4/{}/tcp/{}",
+        config.network.listen_address,
+        config.network.listen_port
+    );
 
     let mut authorizer = AuthorizerWorkflow::new();
 

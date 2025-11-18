@@ -160,11 +160,7 @@ pub fn daemonize(pid_file: &Path) -> CliResult<()> {
         .pid_file(pid_file, Some(false))
         .work_dir(std::env::current_dir().unwrap_or_else(|_| PathBuf::from("/")))
         .stdout(stdout)
-        .stderr(stderr)
-        .setup_post_fork_parent_hook(|_parent_pid, _child_pid| {
-            // Parent process hook - can be used for cleanup
-            Ok(())
-        });
+        .stderr(stderr);
 
     daemon
         .start()
