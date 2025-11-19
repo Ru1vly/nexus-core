@@ -60,7 +60,7 @@ pub mod cli;
 // Error Types
 // ============================================================================
 
-pub use error::{NexusError, Result};
+pub use error::{AhenkError, Result};
 
 // ============================================================================
 // Core Models
@@ -107,7 +107,7 @@ pub use logic::build_oplog_entry;
 pub use logic::sync::{
     connect_to_bootstrap_nodes, connect_to_relay_servers, create_swarm, create_swarm_default,
     decode_sync_message, encode_sync_message, generate_device_id, handle_sync_message,
-    parse_multiaddr_peer_id, update_peer_info, NexusBehaviour, P2PConfig, SyncMessage,
+    parse_multiaddr_peer_id, update_peer_info, AhenkBehaviour, P2PConfig, SyncMessage,
 };
 
 // Sync manager for orchestrating P2P operations
@@ -138,13 +138,13 @@ mod tests {
 
     #[test]
     fn test_error_display() {
-        let err = NexusError::Validation("test error".to_string());
+        let err = AhenkError::Validation("test error".to_string());
         assert_eq!(format!("{}", err), "Validation error: test error");
     }
 
     #[test]
     fn test_error_from_string() {
-        let err: NexusError = "test".into();
-        assert!(matches!(err, NexusError::Other(_)));
+        let err: AhenkError = "test".into();
+        assert!(matches!(err, AhenkError::Other(_)));
     }
 }

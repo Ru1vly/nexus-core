@@ -13,10 +13,10 @@ pub type DbConnection = Connection;
 ///
 /// # Safety
 ///
-/// The caller is responsible for calling `nexus_close_database` to free the connection.
+/// The caller is responsible for calling `ahenk_close_database` to free the connection.
 /// The `db_path` must be a valid, null-terminated C string.
 #[unsafe(no_mangle)]
-pub unsafe extern "C" fn nexus_initialize_database(db_path: *const c_char) -> *mut DbConnection {
+pub unsafe extern "C" fn ahenk_initialize_database(db_path: *const c_char) -> *mut DbConnection {
     if db_path.is_null() {
         return ptr::null_mut();
     }
@@ -38,9 +38,9 @@ pub unsafe extern "C" fn nexus_initialize_database(db_path: *const c_char) -> *m
 /// # Safety
 ///
 /// The `conn_ptr` must be a valid pointer to a `DbConnection` that was created
-/// by `nexus_initialize_database`.
+/// by `ahenk_initialize_database`.
 #[unsafe(no_mangle)]
-pub unsafe extern "C" fn nexus_close_database(conn_ptr: *mut DbConnection) {
+pub unsafe extern "C" fn ahenk_close_database(conn_ptr: *mut DbConnection) {
     if !conn_ptr.is_null() {
         unsafe {
             let _ = Box::from_raw(conn_ptr);
@@ -54,9 +54,9 @@ pub unsafe extern "C" fn nexus_close_database(conn_ptr: *mut DbConnection) {
 ///
 /// The `conn_ptr` must be a valid pointer to a `DbConnection`.
 /// The `username`, `email`, and `password` must be valid, null-terminated C strings.
-/// The caller is responsible for calling `nexus_free_string` on the returned pointer.
+/// The caller is responsible for calling `ahenk_free_string` on the returned pointer.
 #[unsafe(no_mangle)]
-pub unsafe extern "C" fn nexus_register_user(
+pub unsafe extern "C" fn ahenk_register_user(
     conn_ptr: *mut DbConnection,
     username: *const c_char,
     email: *const c_char,
@@ -91,7 +91,7 @@ pub unsafe extern "C" fn nexus_register_user(
 ///
 /// The `s_ptr` must be a valid pointer to a C string that was allocated by Rust.
 #[unsafe(no_mangle)]
-pub unsafe extern "C" fn nexus_free_string(s_ptr: *mut c_char) {
+pub unsafe extern "C" fn ahenk_free_string(s_ptr: *mut c_char) {
     if !s_ptr.is_null() {
         unsafe {
             let _ = CString::from_raw(s_ptr);
@@ -105,9 +105,9 @@ pub unsafe extern "C" fn nexus_free_string(s_ptr: *mut c_char) {
 ///
 /// The `conn_ptr` must be a valid pointer to a `DbConnection`.
 /// The `username` and `password` must be valid, null-terminated C strings.
-/// The caller is responsible for calling `nexus_free_string` on the returned pointer.
+/// The caller is responsible for calling `ahenk_free_string` on the returned pointer.
 #[unsafe(no_mangle)]
-pub unsafe extern "C" fn nexus_login_user(
+pub unsafe extern "C" fn ahenk_login_user(
     conn_ptr: *mut DbConnection,
     username: *const c_char,
     password: *const c_char,

@@ -13,7 +13,7 @@ use uuid::Uuid;
 
 /// Network behavior combining mDNS, Gossipsub, Relay, and DCUtR
 #[derive(NetworkBehaviour)]
-pub struct NexusBehaviour {
+pub struct AhenkBehaviour {
     /// mDNS for local network peer discovery
     pub mdns: mdns::tokio::Behaviour,
     /// Gossipsub for message propagation
@@ -122,7 +122,7 @@ pub fn generate_device_id() -> (PeerId, identity::Keypair) {
 pub fn create_swarm(
     keypair: identity::Keypair,
     config: P2PConfig,
-) -> Result<Swarm<NexusBehaviour>, Box<dyn std::error::Error>> {
+) -> Result<Swarm<AhenkBehaviour>, Box<dyn std::error::Error>> {
     let peer_id = PeerId::from(keypair.public());
 
     // Create a Gossipsub topic for sync messages
@@ -165,7 +165,7 @@ pub fn create_swarm(
     // Create DCUtR behaviour for hole punching
     let dcutr = dcutr::Behaviour::new(peer_id);
 
-    let behaviour = NexusBehaviour {
+    let behaviour = AhenkBehaviour {
         mdns,
         gossipsub,
         relay_client,
@@ -194,7 +194,7 @@ pub fn create_swarm(
 /// Create a swarm with default configuration
 pub fn create_swarm_default(
     keypair: identity::Keypair,
-) -> Result<Swarm<NexusBehaviour>, Box<dyn std::error::Error>> {
+) -> Result<Swarm<AhenkBehaviour>, Box<dyn std::error::Error>> {
     create_swarm(keypair, P2PConfig::default())
 }
 
@@ -214,7 +214,7 @@ pub fn parse_multiaddr_peer_id(addr: &str) -> Option<PeerId> {
 
 /// Connect to bootstrap nodes
 pub fn connect_to_bootstrap_nodes(
-    swarm: &mut Swarm<NexusBehaviour>,
+    swarm: &mut Swarm<AhenkBehaviour>,
     bootstrap_nodes: &[String],
 ) -> Result<usize, String> {
     use libp2p::multiaddr::Multiaddr;
@@ -243,7 +243,7 @@ pub fn connect_to_bootstrap_nodes(
 
 /// Connect to relay servers for NAT traversal
 pub fn connect_to_relay_servers(
-    swarm: &mut Swarm<NexusBehaviour>,
+    swarm: &mut Swarm<AhenkBehaviour>,
     relay_servers: &[String],
 ) -> Result<usize, String> {
     use libp2p::multiaddr::Multiaddr;

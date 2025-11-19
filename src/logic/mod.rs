@@ -5,6 +5,11 @@
 //! - Device management and authorization
 //! - P2P synchronization (see sync module)
 //! - Sync orchestration (see sync_manager module)
+//!
+//! # TODO: Error Handling Migration
+//! Currently this module uses `Result<T, String>` for error handling.
+//! Should be migrated to `Result<T, AhenkError>` for better error categorization
+//! and consistent error handling across the crate.
 
 pub mod sync;
 pub mod sync_manager;

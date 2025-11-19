@@ -26,6 +26,13 @@ mod tauri_commands {
     use tauri::State;
     use uuid::Uuid;
 
+    // TODO: Add AppState with persistent device_id
+    // Currently each command generates a new device_id which breaks CRDT sync
+    // Should be:
+    // pub struct AppState {
+    //     pub conn: Mutex<Connection>,
+    //     pub device_id: Uuid,  // Persistent device ID for this app instance
+    // }
     pub struct DbConnection(pub Mutex<Connection>);
 
     // ============= User Management =============

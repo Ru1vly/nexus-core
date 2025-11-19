@@ -1,6 +1,6 @@
 use crate::logic::sync::{
     connect_to_bootstrap_nodes, connect_to_relay_servers, create_swarm, encode_sync_message,
-    NexusBehaviour, NexusBehaviourEvent, P2PConfig, SyncMessage,
+    AhenkBehaviour, AhenkBehaviourEvent, P2PConfig, SyncMessage,
 };
 use crate::models::OplogEntry;
 use chrono::{DateTime, Utc};
@@ -17,7 +17,7 @@ use uuid::Uuid;
 /// Sync manager for handling P2P network events and synchronization
 pub struct SyncManager {
     /// The libp2p swarm
-    swarm: Swarm<NexusBehaviour>,
+    swarm: Swarm<AhenkBehaviour>,
     /// User ID for this device
     user_id: Uuid,
     /// Device ID for this device
@@ -314,10 +314,10 @@ impl SyncManager {
     /// Handle behaviour-specific events
     fn handle_behaviour_event(
         &mut self,
-        event: <NexusBehaviour as libp2p::swarm::NetworkBehaviour>::ToSwarm,
+        event: <AhenkBehaviour as libp2p::swarm::NetworkBehaviour>::ToSwarm,
     ) -> Result<(), Box<dyn std::error::Error>> {
         match event {
-            NexusBehaviourEvent::Mdns(mdns::Event::Discovered(peers)) => {
+            AhenkBehaviourEvent::Mdns(mdns::Event::Discovered(peers)) => {
                 for (peer_id, _addr) in peers {
                     println!("Discovered peer: {}", peer_id);
                     self.swarm
@@ -326,7 +326,7 @@ impl SyncManager {
                         .add_explicit_peer(&peer_id);
                 }
             }
-            NexusBehaviourEvent::Mdns(mdns::Event::Expired(peers)) => {
+            AhenkBehaviourEvent::Mdns(mdns::Event::Expired(peers)) => {
                 for (peer_id, _addr) in peers {
                     println!("Peer expired: {}", peer_id);
                     self.swarm
@@ -335,7 +335,7 @@ impl SyncManager {
                         .remove_explicit_peer(&peer_id);
                 }
             }
-            NexusBehaviourEvent::Gossipsub(gossipsub::Event::Message { message, .. }) => {
+            AhenkBehaviourEvent::Gossipsub(gossipsub::Event::Message { message, .. }) => {
                 self.handle_gossipsub_message(message)?;
             }
             _ => {}

@@ -2,7 +2,7 @@ use std::fmt;
 
 /// Main error type for the ahenk library
 #[derive(Debug)]
-pub enum NexusError {
+pub enum AhenkError {
     /// Database-related errors
     Database(rusqlite::Error),
     /// Validation errors (e.g., empty fields, invalid input)
@@ -21,54 +21,54 @@ pub enum NexusError {
     Other(String),
 }
 
-impl fmt::Display for NexusError {
+impl fmt::Display for AhenkError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            NexusError::Database(e) => write!(f, "Database error: {}", e),
-            NexusError::Validation(msg) => write!(f, "Validation error: {}", msg),
-            NexusError::Auth(msg) => write!(f, "Authentication error: {}", msg),
-            NexusError::NotFound(msg) => write!(f, "Not found: {}", msg),
-            NexusError::Serialization(msg) => write!(f, "Serialization error: {}", msg),
-            NexusError::Sync(msg) => write!(f, "Synchronization error: {}", msg),
-            NexusError::Io(e) => write!(f, "I/O error: {}", e),
-            NexusError::Other(msg) => write!(f, "{}", msg),
+            AhenkError::Database(e) => write!(f, "Database error: {}", e),
+            AhenkError::Validation(msg) => write!(f, "Validation error: {}", msg),
+            AhenkError::Auth(msg) => write!(f, "Authentication error: {}", msg),
+            AhenkError::NotFound(msg) => write!(f, "Not found: {}", msg),
+            AhenkError::Serialization(msg) => write!(f, "Serialization error: {}", msg),
+            AhenkError::Sync(msg) => write!(f, "Synchronization error: {}", msg),
+            AhenkError::Io(e) => write!(f, "I/O error: {}", e),
+            AhenkError::Other(msg) => write!(f, "{}", msg),
         }
     }
 }
 
-impl std::error::Error for NexusError {
+impl std::error::Error for AhenkError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
         match self {
-            NexusError::Database(e) => Some(e),
-            NexusError::Io(e) => Some(e),
+            AhenkError::Database(e) => Some(e),
+            AhenkError::Io(e) => Some(e),
             _ => None,
         }
     }
 }
 
-impl From<rusqlite::Error> for NexusError {
+impl From<rusqlite::Error> for AhenkError {
     fn from(err: rusqlite::Error) -> Self {
-        NexusError::Database(err)
+        AhenkError::Database(err)
     }
 }
 
-impl From<std::io::Error> for NexusError {
+impl From<std::io::Error> for AhenkError {
     fn from(err: std::io::Error) -> Self {
-        NexusError::Io(err)
+        AhenkError::Io(err)
     }
 }
 
-impl From<String> for NexusError {
+impl From<String> for AhenkError {
     fn from(msg: String) -> Self {
-        NexusError::Other(msg)
+        AhenkError::Other(msg)
     }
 }
 
-impl From<&str> for NexusError {
+impl From<&str> for AhenkError {
     fn from(msg: &str) -> Self {
-        NexusError::Other(msg.to_string())
+        AhenkError::Other(msg.to_string())
     }
 }
 
 /// Result type alias for ahenk operations
-pub type Result<T> = std::result::Result<T, NexusError>;
+pub type Result<T> = std::result::Result<T, AhenkError>;

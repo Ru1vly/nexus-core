@@ -1,3 +1,9 @@
+-- ⚠️ DEPRECATED: This file is kept for reference only.
+-- ⚠️ Active schema is managed through migrations in: src/db/migrations/
+-- ⚠️ See: DATABASE_MIGRATIONS.md for migration system documentation
+--
+-- Database schema for Ahenk (Reference Only)
+
 -- Users Table: Stores user account information.
 CREATE TABLE users (
     user_id UUID PRIMARY KEY,
