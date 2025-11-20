@@ -10,6 +10,7 @@ pub enum CliError {
     SyncError(String),
     DaemonError(String),
     ValidationError(String),
+    AuthError(String),
     NotFound(String),
     Other(String),
 }
@@ -23,6 +24,7 @@ impl fmt::Display for CliError {
             CliError::SyncError(msg) => write!(f, "Sync error: {}", msg),
             CliError::DaemonError(msg) => write!(f, "Daemon error: {}", msg),
             CliError::ValidationError(msg) => write!(f, "Validation error: {}", msg),
+            CliError::AuthError(msg) => write!(f, "Authentication error: {}", msg),
             CliError::NotFound(msg) => write!(f, "Not found: {}", msg),
             CliError::Other(msg) => write!(f, "{}", msg),
         }
